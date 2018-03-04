@@ -1,3 +1,4 @@
+#include <cassert>
 #include <catch.hpp>
 #include <sstream>
 
@@ -30,202 +31,191 @@ TEST_CASE("reading matrix")
     REQUIRE( input == ostream.str() );
 }
 
-TEST_CASE("add matrix")
+matrix_t matrix( std::string const & representation )
 {
-    std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
-    std::string stroka2{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
-    std::string strokar{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
+    matrix_t result;
     
-    matrix_t matrix1, matrix2, result;   
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
+    std::istringstream istream{ representation };
+    assert( result.read( istream ) );
     
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
-    result = matrix1 + matrix2;
-    
-    std::ostringstream ostream;
-    result.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    return result;
 }
 
-TEST_CASE("sub matrix")
+std::string representation( matrix_t const & matrix )
 {
-    std::string stroka1{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
-    std::string stroka2{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
-    std::string strokar{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
-    
-    matrix_t matrix1, matrix2, result;   
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
-    
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
-    result = matrix1 - matrix2;
-    
     std::ostringstream ostream;
-    result.write( ostream );
+    matrix.write( ostream );
     
-    REQUIRE( strokar == ostream.str() );
+    return ostream.str();
 }
 
-TEST_CASE("mul matrix")
+TEST_CASE("addings matrixs")
 {
-    std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
-    std::string stroka2{
-        "4, 3\n"
-        "7 2 2 \n"
-        "1 5 2 \n"
-        "2 2 8 \n" 
-        "1 1 1" };
-    std::string strokar{
-        "3, 3\n"
-        "21 20 41\n"
-        "25 19 28\n"
-        "79 46 55" };
+    std::string first_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    std::string second_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
     
-    matrix_t matrix1, matrix2, result;   
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
+    matrix_t result_matrix = first_matrix + second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "1, 3\n"
+        "2 2 2\n"
+    };
     
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
-    result = matrix1 * matrix2;
-    
-    std::ostringstream ostream;
-    result.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    REQUIRE( representation( result_matrix ) == expected_result_matrix_representation );
 }
 
-TEST_CASE("selfsub matrix")
+TEST_CASE("subtracting matrixs")
 {
-    std::string stroka1{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
-    std::string stroka2{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
-    std::string strokar{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
+    std::string first_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    std::string second_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
     
-    matrix_t matrix1, matrix2;   
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
+    matrix_t result_matrix = first_matrix - second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "1, 3\n"
+        "0 0 0\n"
+    };
     
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
-    matrix1 -= matrix2;
-    
-    std::ostringstream ostream;
-    matrix1.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    REQUIRE( representation( result_matrix ) == expected_result_matrix_representation );
 }
 
-TEST_CASE("selfadd matrix")
+TEST_CASE("multiplying matrixs")
 {
-    std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
-    std::string stroka2{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
-    std::string strokar{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
+    std::string first_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    std::string second_matrix_representation{
+        "3, 1\n"
+        "1\n"
+        "1\n"
+        "1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
     
-    matrix_t matrix1, matrix2;   
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
+    matrix_t result_matrix = first_matrix * second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "1, 1\n"
+        "3"
+    };
     
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
-    matrix1 += matrix2;
-    
-    std::ostringstream ostream;
-    matrix1.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    REQUIRE( representation( result_matrix ) == expected_result_matrix_representation );
 }
 
-TEST_CASE("selfmul matrix")
+TEST_CASE("addings_2 matrixs")
 {
-    std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
-    std::string stroka2{
-        "4, 3\n"
-        "7 2 2 \n"
-        "1 5 2 \n"
-        "2 2 8 \n" 
-        "1 1 1" };
-    std::string strokar{
-        "3, 3\n"
-        "21 20 41\n"
-        "25 19 28\n"
-        "79 46 55" };
+    std::string first_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    std::string second_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
     
-    matrix_t matrix1, matrix2;   
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
+    first_matrix += second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "1, 3\n"
+        "2 2 2\n"
+    };
     
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
+    REQUIRE( representation( first_matrix ) == expected_result_matrix_representation );
+}
+
+TEST_CASE("subtracting_2 matrixs")
+{
+    std::string first_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    std::string second_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
     
-    matrix1 *= matrix2;
+    first_matrix -= second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "1, 3\n"
+        "0 0 0\n"
+    };
     
-    std::ostringstream ostream;
-    matrix1.write( ostream );
+    REQUIRE( representation( first_matrix ) == expected_result_matrix_representation );
+}
+
+TEST_CASE("multiplying_2 matrixs")
+{
+    std::string first_matrix_representation{
+        "1, 3\n"
+        "1 1 1\n"
+    };
+    std::string second_matrix_representation{
+        "3, 1\n"
+        "1\n"
+        "1\n"
+        "1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
     
-    REQUIRE( strokar == ostream.str() );
+    first_matrix *= second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "1, 1\n"
+        "3"
+    };
+    
+    REQUIRE( representation( first_matrix ) == expected_result_matrix_representation );
+}
+
+TEST_CASE("addings matrixs 3x1")
+{
+    std::string first_matrix_representation{
+        "3, 1\n"
+        "1\n"
+        "1\n"
+        "1\n"
+    };
+    std::string second_matrix_representation{
+        "3, 1\n"
+        "1\n"
+        "1\n"
+        "1\n"
+    };
+    matrix_t first_matrix = matrix( first_matrix_representation );
+    matrix_t second_matrix = matrix( second_matrix_representation );
+    
+    matrix_t result_matrix = first_matrix + second_matrix;
+
+    std::string expected_result_matrix_representation{
+        "3, 1\n"
+        "2\n"
+        "2\n"
+        "2\n"
+    };
+    
+    REQUIRE( representation( result_matrix ) == expected_result_matrix_representation );
 }
