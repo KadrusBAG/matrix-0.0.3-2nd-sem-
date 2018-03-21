@@ -5,7 +5,7 @@
 
 TEST_CASE("creating matrix")
 {
-    matrix_t matrix;
+    matrix_t matrix<int>;
     REQUIRE( matrix.rows() == 0 );
     REQUIRE( matrix.collumns() == 0 );
 }
@@ -17,7 +17,7 @@ TEST_CASE("reading matrix")
         "1 1 1\n"
         "2 2 2\n"
         "3 3 3" };
-    matrix_t matrix;
+    matrix_t matrix<int>;
     std::istringstream istream{ input };
     
     REQUIRE( matrix.read( istream ) );
@@ -33,22 +33,19 @@ TEST_CASE("reading matrix")
 TEST_CASE("add matrix")
 {
     std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
+        "2, 3\n"
+        "1.1 1.1 1.1\n"
+        "2.2 2.2 2.2" }; 
     std::string stroka2{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
+        "2, 3\n"
+        "2.2 2.2 2.2\n"
+        "1.1 1.1 1.1" };
     std::string strokar{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
+        "2, 3\n"
+        "3.3 3.3 3.3\n"
+        "3.3 3.3 3.3" };
     
-    matrix_t matrix1, matrix2, result;   
+    matrix_t<float> matrix1, matrix2, result;   
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
     
@@ -66,22 +63,19 @@ TEST_CASE("add matrix")
 TEST_CASE("sub matrix")
 {
     std::string stroka1{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
+        "2, 3\n"
+        "3.3 3.3 3.3\n"
+        "3.3 3.3 3.3" };
     std::string stroka2{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
+        "2, 3\n"
+        "2.2 2.2 2.2\n"
+        "1.1 1.1 1.1" };
     std::string strokar{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
+        "2, 3\n"
+        "1.1 1.1 1.1\n"
+        "2.2 2.2 2.2" };
     
-    matrix_t matrix1, matrix2, result;   
+    matrix_t<float> matrix1, matrix2, result;   
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
     
@@ -99,23 +93,20 @@ TEST_CASE("sub matrix")
 TEST_CASE("mul matrix")
 {
     std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
+        "2, 3\n"
+        "1 2 3\n"
+        "4 5 6" }; 
     std::string stroka2{
-        "4, 3\n"
-        "7 2 2 \n"
-        "1 5 2 \n"
-        "2 2 8 \n" 
-        "1 1 1" };
+        "3, 2\n"
+        "1 4\n"
+        "2 5\n"
+        "3 6"  };
     std::string strokar{
-        "3, 3\n"
-        "21 20 41\n"
-        "25 19 28\n"
-        "79 46 55" };
+        "2, 2\n"
+        "14 32\n"
+        "32 77" };
     
-    matrix_t matrix1, matrix2, result;   
+    matrix_t<int> matrix1, matrix2, result;   
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
     
@@ -133,22 +124,19 @@ TEST_CASE("mul matrix")
 TEST_CASE("selfsub matrix")
 {
     std::string stroka1{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
+        "2, 3\n"
+        "3.3 3.3 3.3\n"
+        "3.3 3.3 3.3" }; 
     std::string stroka2{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
+        "2, 3\n"
+        "2.2 2.2 2.2\n"
+        "1.1 1.1 1.1" }; 
     std::string strokar{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
+        "2, 3\n"
+        "1.1 1.1 1.1\n"
+        "2.2 2.2 2.2" };
     
-    matrix_t matrix1, matrix2;   
+    matrix_t<float> matrix1, matrix2;   
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
     
@@ -166,22 +154,19 @@ TEST_CASE("selfsub matrix")
 TEST_CASE("selfadd matrix")
 {
     std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
+        "2, 3\n"
+        "1.1 1.1 1.1\n"
+        "2.2 2.2 2.2" }; 
     std::string stroka2{
-        "3, 4\n"
-        "7 2 2 7\n"
-        "1 5 2 6\n"
-        "2 2 8 5" };
+        "2, 3\n"
+        "2.2 2.2 2.2\n"
+        "1.1 1.1 1.1" };
     std::string strokar{
-        "3, 4\n"
-        "8 3 6 12\n"
-        "3 6 4 12\n"
-        "11 5 11 12" };
+        "2, 3\n"
+        "3.3 3.3 3.3\n"
+        "3.3 3.3 3.3" };
     
-    matrix_t matrix1, matrix2;   
+    matrix_t<float> matrix1, matrix2;   
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
     
@@ -199,23 +184,20 @@ TEST_CASE("selfadd matrix")
 TEST_CASE("selfmul matrix")
 {
     std::string stroka1{
-        "3, 4\n"
-        "1 1 4 5\n"
-        "2 1 2 6\n"
-        "9 3 3 7" }; 
+        "2, 3\n"
+        "1 2 3\n"
+        "4 5 6" }; 
     std::string stroka2{
-        "4, 3\n"
-        "7 2 2 \n"
-        "1 5 2 \n"
-        "2 2 8 \n" 
-        "1 1 1" };
+        "3, 2\n"
+        "1 4\n"
+        "2 5\n"
+        "3 6"  };
     std::string strokar{
-        "3, 3\n"
-        "21 20 41\n"
-        "25 19 28\n"
-        "79 46 55" };
+        "2, 2\n"
+        "14 32\n"
+        "32 77" };
     
-    matrix_t matrix1, matrix2;   
+    matrix_t<int> matrix1, matrix2;   
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
     
