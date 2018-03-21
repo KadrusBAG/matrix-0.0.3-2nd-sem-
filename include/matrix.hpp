@@ -297,3 +297,4 @@ public:
 
         return stream;
     }
+}
