@@ -1,27 +1,30 @@
 #include <iostream>
 
-class matrix_t {
+template <typename T>
+class matrix_t
+{
 private:
-	float ** elements_;
-	std::size_t rows_;
-	std::size_t collumns_;
+    float** elements_;
+    std::size_t rows_;
+    std::size_t collumns_;
+
 public:
-	matrix_t();
-	matrix_t( matrix_t const & other );
-	matrix_t & operator =( matrix_t const & other );
-	~matrix_t();
+    matrix_t();
+    matrix_t(matrix_t<T> const& other);
+    matrix_t& operator=(matrix_t<T> const& other);
+    ~matrix_t();
 
-	std::size_t rows() const;
-	std::size_t collumns() const;
+    std::size_t rows() const;
+    std::size_t collumns() const;
 
-	matrix_t operator +( matrix_t const & other ) const;
-	matrix_t operator -( matrix_t const & other ) const;
-	matrix_t operator *( matrix_t const & other ) const;
+    matrix_t operator+(matrix_t<T> const& other) const;
+    matrix_t operator-(matrix_t<T> const& other) const;
+    matrix_t operator*(matrix_t<T> const& other) const;
 
-	matrix_t & operator -=( matrix_t const & other );
-	matrix_t & operator +=( matrix_t const & other );
-	matrix_t & operator *=( matrix_t const & other );
+    matrix_t& operator-=(matrix_t<T> const& other);
+    matrix_t& operator+=(matrix_t<T> const& other);
+    matrix_t& operator*=(matrix_t<T> const& other);
 
-	std::istream & read( std::istream & stream );
-	std::ostream & write( std::ostream  & stream ) const;
+    std::istream& read(std::istream& stream);
+    std::ostream& write(std::ostream& stream) const;
 };
