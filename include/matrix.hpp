@@ -297,4 +297,4 @@ public:
 
         return stream;
     }
-}
+};
