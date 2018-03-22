@@ -42,7 +42,7 @@ TEST_CASE("add matrix int")
                                "3 3 3\n"
                                "3 3 3" };
 
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -69,7 +69,7 @@ TEST_CASE("add matrix float")
                                "3.3 3.3 3.3\n"
                                "3.3 3.3 3.3" };
 
-    matrix_t<float> matrix1, matrix2, result;
+    matrix_t<float> matrix1; matrix_t<float> matrix2; matrix_t<float> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -93,7 +93,7 @@ TEST_CASE("cheking add matrix")
                          "1 2 3\n"
                          "1 2 3\n"
                          "1 2 3" };
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -115,7 +115,7 @@ TEST_CASE("sub matrix")
                                "1 1 1\n"
                                "2 2 2" };
 
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -139,7 +139,7 @@ TEST_CASE("cheking sub matrix")
                          "1 2 3\n"
                          "1 2 3\n"
                          "1 2 3" };
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -162,7 +162,7 @@ TEST_CASE("mul matrix")
                                "14 32\n"
                                "32 77" };
 
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -185,7 +185,7 @@ TEST_CASE("cheking mul matrix")
     std::string stroka2{ "2, 3\n"
                          "1 2 3\n"
                          "1 2 3" };
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -207,7 +207,7 @@ TEST_CASE("selfadd matrix")
                                "3 3 3\n"
                                "3 3 3" };
 
-    matrix_t<int> matrix1, matrix2;
+    matrix_t<int> matrix1; matrix_t<int> matrix2;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -231,7 +231,7 @@ TEST_CASE("cheking selfadd matrix")
                          "1 2 3\n"
                          "1 2 3\n"
                          "1 2 3" };
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -253,7 +253,7 @@ TEST_CASE("selfsub matrix")
                                "1 1 1\n"
                                "2 2 2" };
 
-    matrix_t<int> matrix1, matrix2;
+    matrix_t<int> matrix1; matrix_t<int> matrix2;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -277,7 +277,7 @@ TEST_CASE("cheking selfsub matrix")
                          "1 2 3\n"
                          "1 2 3\n"
                          "1 2 3" };
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -300,7 +300,7 @@ TEST_CASE("selfmul matrix")
                                "14 32\n"
                                "32 77" };
 
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
@@ -323,7 +323,7 @@ TEST_CASE("cheking selfmul matrix")
     std::string stroka2{ "2, 3\n"
                          "1 2 3\n"
                          "1 2 3" };
-    matrix_t<int> matrix1, matrix2, result;
+    matrix_t<int> matrix1; matrix_t<int> matrix2; matrix_t<int> result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
 
