@@ -337,5 +337,3 @@ template <typename T> std::ostream& matrix_t<T>::write(std::ostream& stream) con
 
     return stream;
 }
-}
-;
