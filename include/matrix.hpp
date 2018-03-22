@@ -111,12 +111,12 @@ matrix_t<T> matrix_t<T>::operator+(matrix_t const& other) const
     {
         result.rows_ = rows_;
         result.collumns_ = collumns_;
+        result.elements_ = new T*[rows_];
         for (std::size_t i = 0; i < rows_; ++i)
         {
-            result.elements_ = new T*[rows_];
+            result.elements_[i] = new T[collumns_];
             for (std::size_t j = 0; j < collumns_; ++j)
             {
-                result.elements_[i] = new T[collumns_];
                 result.elements_[i][j] = elements_[i][j] + other.elements_[i][j];
             }
         }
@@ -136,12 +136,12 @@ matrix_t<T> matrix_t<T>::operator-(matrix_t const& other) const
     {
         result.rows_ = rows_;
         result.collumns_ = collumns_;
+        result.elements_ = new T*[rows_];
         for (std::size_t i = 0; i < rows_; ++i)
         {
-            result.elements_ = new T*[rows_];
+            result.elements_[i] = new T[collumns_];
             for (std::size_t j = 0; j < collumns_; ++j)
             {
-                result.elements_[i] = new T[collumns_];
                 result.elements_[i][j] = elements_[i][j] - other.elements_[i][j];
             }
         }
