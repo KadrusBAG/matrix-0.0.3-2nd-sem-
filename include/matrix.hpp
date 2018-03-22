@@ -334,6 +334,6 @@ template <typename T> std::ostream& matrix_t<T>::write(std::ostream& stream) con
             }
         }
     }
-
+    if (collumns_ != rows_) stream << '\n';
     return stream;
 }
