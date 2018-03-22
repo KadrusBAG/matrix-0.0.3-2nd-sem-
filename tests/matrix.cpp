@@ -49,31 +49,32 @@ TEST_CASE("reading float_matrix")
     REQUIRE(input == output.str());
 }
 
-TEST_CASE("add matrix int")
+TEST_CASE("adding matrix int")
 {
-    std::string stroka1{ "2, 3\n"
-                         "1 1 1\n"
-                         "2 2 2" };
-    std::string stroka2{ "2, 3\n"
-                         "2 2 2\n"
-                         "1 1 1" };
-    std::string stroka_result{ "2, 3\n"
-                               "3 3 3\n"
-                               "3 3 3" };
-
+    std::string input1{
+        "3, 3\n"
+        "1 1 1\n"
+        "1 1 1\n"
+        "1 1 1" };
+    std::string input2{
+        "3, 3\n"
+        "2 2 2\n"
+        "2 2 2\n"
+        "2 2 2" };
+    std::string resultadd{
+        "3, 3\n"
+        "3 3 3\n"
+        "3 3 3\n"
+        "3 3 3" };
     matrix_t<int> matrix1, matrix2, result;
-    std::istringstream istream1{ stroka1 };
-    std::istringstream istream2{ stroka2 };
-
-    matrix1.read(istream1);
-    matrix2.read(istream2);
-
+    std::istringstream istream1{ input1 };
+    std::istringstream istream2{ input2 };
+    matrix1.read( istream1 );
+    matrix2.read( istream2 );
     result = matrix1 + matrix2;
-
     std::ostringstream ostream;
-    result.write(ostream);
-
-    REQUIRE(stroka_result == ostream.str());
+    result.write( ostream );
+    REQUIRE( resultadd == ostream.str() );
 }
 
 TEST_CASE("add matrix float")
