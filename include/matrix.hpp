@@ -80,33 +80,37 @@ public:
 
     matrix_t<T> operator+(matrix_t<T> const& other) const
     {
-        matrix_t<T> result(other);
+        matrix_t<T> result;
         if (rows_ == other.rows_ && collumns_ == other.collumns_)
         {
             for (std::size_t i = 0; i < rows_; ++i)
             {
+                result.elements_ = new T *[rows_];
                 for (std::size_t j = 0; j < collumns_; ++j)
                 {
+                    result.elements_[i] = new T [collumns_];
                     result.elements_[i][j] = elements_[i][j] + other.elements_[i][j];
                 }
             }
         }
         else
         {
-            std::cout << "An error has occured while reading input data__\n";
+            throw std::invalid_argument("Invalid syntax");
         }
         return result;
     }
 
     matrix_t<T> operator-(matrix_t<T> const& other) const
     {
-        matrix_t<T> result(other);
+        matrix_t<T> result;
         if (rows_ == other.rows_ && collumns_ == other.collumns_)
         {
             for (std::size_t i = 0; i < rows_; ++i)
             {
+                result.elements_ = new T *[rows_];
                 for (std::size_t j = 0; j < collumns_; ++j)
                 {
+                    result.elements_[i] = new T [collumns_];
                     result.elements_[i][j] = elements_[i][j] - other.elements_[i][j];
                 }
             }
@@ -114,7 +118,7 @@ public:
         }
         else
         {
-            std::cout << "An error has occured while reading input data__\n";
+            throw std::invalid_argument("Invalid syntax");
         }
         return result;
     }
@@ -146,7 +150,7 @@ public:
         }
         else
         {
-            std::cout << "An error has occured while reading input data__\n";
+            throw std::invalid_argument("Invalid syntax");
         }
         return result;
     }
@@ -165,7 +169,7 @@ public:
         }
         else
         {
-            std::cout << "An error has occured while reading input data__\n";
+            throw std::invalid_argument("Invalid syntax");
         }
         return *this;
     }
@@ -184,7 +188,7 @@ public:
         }
         else
         {
-            std::cout << "An error has occured while reading input data__\n";
+            throw std::invalid_argument("Invalid syntax");
         }
         return *this;
     }
@@ -201,7 +205,7 @@ public:
             {
                 result.elements_[i] = new T[other.collumns_];
             }
-            for (int i = 0; i < rows_; ++i)
+            for (std::size_t i = 0; i < rows_; ++i) 
             {
                 for (std::size_t j = 0; j < other.collumns_; ++j)
                 {
@@ -217,21 +221,54 @@ public:
         }
         else
         {
-            std::cout << "An error has occured while reading input data__\n";
+            throw std::invalid_argument("Invalid syntax");
         }
         return *this;
+    }
+    
+    bool success(matrix_t<T> & const, char op){
+        matrix_t<T> result;
+        bool proverka = true;
+        if (op == '+'){
+            try{
+                result = *this + one;
+            }
+            catch (std::invalid_argument s) {
+				proverka = false;
+			}
+            break;
+        }
+        if (op == '-'){
+            try{
+                result = *this - one;
+            }
+            catch (std::invalid_argument s) {
+				proverka = false;
+			}
+            break;
+        }
+        if (op == '*'){
+            try{
+                result = *this * one;
+            }
+            catch (std::invalid_argument s) {
+				proverka = false;
+			}
+            break;
+        }
+        return proverka;
     }
 
     std::istream& read(std::istream& stream)
     {
         std::size_t rows;
         std::size_t collumns;
-        char symbol;
+        char symbol;    
 
         bool success = true;
         if (stream >> rows && stream >> symbol && symbol == ',' && stream >> collumns)
         {
-            float** elements = new T*[rows];
+            T** elements = new T*[rows];
             for (std::size_t i = 0; success && i < rows; ++i)
             {
                 elements[i] = new T[collumns];
