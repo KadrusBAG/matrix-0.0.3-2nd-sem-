@@ -30,25 +30,6 @@ TEST_CASE("reading matrix")
     REQUIRE(input == ostream.str());
 }
 
-TEST_CASE("reading float_matrix")
-{
-    std::string input{ "3, 3\n"
-                       "1.2 1.3 1.4\n"
-                       "2.3 2.4 2.5\n"
-                       "3.4 3.5 3.6" };
-    matrix_t<float> matrix;
-    std::istringstream stream{ input };
-
-    REQUIRE(matrix.read(stream));
-    REQUIRE(matrix.rows() == 3);
-    REQUIRE(matrix.collumns() == 3);
-
-    std::ostringstream output;
-    matrix.write(output);
-
-    REQUIRE(input == output.str());
-}
-
 TEST_CASE("add matrix int")
 {
     std::string stroka1{ "2, 3\n"
