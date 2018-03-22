@@ -9,14 +9,32 @@ private:
     std::size_t collumns_;
 
 public:
-    matrix_t()
-    {
-        elements_ = nullptr;
-        rows_ = 0;
-        collumns_ = 0;
-    }
+	matrix_t();
+	matrix_t( matrix_t const & other );
+	matrix_t & operator =( matrix_t const & other );
+	~matrix_t();
 
-    matrix_t(matrix_t<T> const& other)
+	std::size_t rows() const;
+	std::size_t collumns() const;
+
+	matrix_t operator +( matrix_t const & other ) const;
+	matrix_t operator -( matrix_t const & other ) const;
+	matrix_t operator *( matrix_t const & other ) const;
+	matrix_t & operator +=( matrix_t const & other );
+	matrix_t & operator -=( matrix_t const & other );
+	matrix_t & operator *=( matrix_t const & other );
+
+	std::istream & read( std::istream & stream );
+	std::ostream & write( std::ostream  & stream ) const;
+};
+
+	template <typename T>
+	matrix_t<T>::matrix_t() : elements_{ nullptr }, rows_{ 0 }, collumns_{ 0 }
+	{
+	}
+
+template <typename T>    
+matrtix_t<T>::matrix_t(matrix_t const& other)
     {
         rows_ = other.rows_;
         collumns_ = other.collumns_;
@@ -31,7 +49,8 @@ public:
         }
     }
 
-    matrix_t<T>& operator=(matrix_t<T> const& other)
+template <typename T>    
+matrix_t<T>& matrix_t<T>::operator=(matrix_t const& other)
     {
         if (this != &other)
         {
@@ -59,7 +78,8 @@ public:
         return *this;
     }
 
-    ~matrix_t()
+template <typename T>    
+matrix_t<T>::~matrix_t()
     {
         for (std::size_t i = 0; i < rows_; ++i)
         {
@@ -68,17 +88,20 @@ public:
         delete[] elements_;
     }
 
-    std::size_t rows() const
+    template <typename T>
+	std::size_t matrix_t<T>::rows() const
     {
         return rows_;
     }
 
-    std::size_t collumns() const
+    template <typename T>
+	std::size_t matrix_t<T>::collumns() const
     {
         return collumns_;
     }
 
-    matrix_t<T> operator+(matrix_t<T> const& other) const
+    template <typename T>
+	matrix_t<T> matrix_t<T>::operator+(matrix_t const& other) const
     {
         matrix_t<T> result;
         if (rows_ == other.rows_ && collumns_ == other.collumns_)
@@ -100,7 +123,8 @@ public:
         return result;
     }
 
-    matrix_t<T> operator-(matrix_t<T> const& other) const
+    template <typename T>
+	matrix_t<T> matrix<T>::operator-(matrix_t const& other) const
     {
         matrix_t<T> result;
         if (rows_ == other.rows_ && collumns_ == other.collumns_)
@@ -123,7 +147,8 @@ public:
         return result;
     }
 
-    matrix_t<T> operator*(matrix_t<T> const& other) const
+    template <typename T>
+	matrix_t<T> matrix_t<T>::operator*(matrix_t const& other) const
     {
         matrix_t<T> result;
         if (collumns_ == other.rows_)
@@ -155,7 +180,8 @@ public:
         return result;
     }
 
-    matrix_t<T>& operator-=(matrix_t<T> const& other)
+    template <typename T>
+	matrix_t<T>& matrix_t<T>::operator-=(matrix_t const& other)
     {
         if (rows_ == other.rows_ && collumns_ == other.collumns_)
         {
@@ -174,7 +200,8 @@ public:
         return *this;
     }
 
-    matrix_t<T>& operator+=(matrix_t<T> const& other)
+    template <typename T>
+	matrix_t<T>& matrix_t<T>::operator+=(matrix_t const& other)
     {
         if (rows_ == other.rows_ && collumns_ == other.collumns_)
         {
@@ -193,7 +220,8 @@ public:
         return *this;
     }
 
-    matrix_t<T>& operator*=(matrix_t<T> const& other)
+    template <typename T>
+	matrix_t<T>& matrix_t<T>::operator*=(matrix_t const& other)
     {
         if (collumns_ == other.rows_)
         {
@@ -259,7 +287,8 @@ public:
         return proverka;
     }
 
-    std::istream& read(std::istream& stream)
+    template <typename T>
+	std::istream& matrix_t<T>::read(std::istream& stream)
     {
         std::size_t rows;
         std::size_t collumns;
@@ -316,7 +345,8 @@ public:
         return stream;
     }
 
-    std::ostream& write(std::ostream& stream) const
+    template <typename<T>
+	std::ostream& matrix_t<T>::write(std::ostream& stream) const
     {
         stream << rows_ << ", " << collumns_;
         for (std::size_t i = 0; i < rows_; ++i)
