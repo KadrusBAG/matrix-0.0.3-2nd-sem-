@@ -319,7 +319,7 @@ std::istream& matrix_t<T>::read(std::istream& stream)
     return stream;
 }
 
-template <typenameT> std::ostream& matrix_t<T>::write(std::ostream& stream) const
+template <typename T> std::ostream& matrix_t<T>::write(std::ostream& stream) const
 {
     stream << rows_ << ", " << collumns_;
     for (std::size_t i = 0; i < rows_; ++i)
