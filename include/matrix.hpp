@@ -129,7 +129,7 @@ matrix_t<T> matrix_t<T>::operator+(matrix_t const& other) const
 }
 
 template <typename T>
-matrix_t<T> matrix<T>::operator-(matrix_t const& other) const
+matrix_t<T> matrix_t<T>::operator-(matrix_t const& other) const
 {
     matrix_t<T> result;
     if (rows_ == other.rows_ && collumns_ == other.collumns_)
@@ -319,7 +319,7 @@ std::istream& matrix_t<T>::read(std::istream& stream)
     return stream;
 }
 
-template <typename<T> std::ostream& matrix_t<T>::write(std::ostream& stream) const
+template <typenameT> std::ostream& matrix_t<T>::write(std::ostream& stream) const
 {
     stream << rows_ << ", " << collumns_;
     for (std::size_t i = 0; i < rows_; ++i)
