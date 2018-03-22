@@ -334,7 +334,7 @@ TEST_CASE("selfmul matrix")
     REQUIRE(stroka_result == ostream.str());
 }
 
-TEST_CASE("cheking mul matrix")
+TEST_CASE("cheking selfmul matrix")
 {
     std::string stroka1{ "2, 3\n"
                          "1 2 3\n"
