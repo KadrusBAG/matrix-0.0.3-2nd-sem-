@@ -1,233 +1,353 @@
 #include <catch.hpp>
 #include <sstream>
+#include <cassert>
 
 #include "matrix.hpp"
 
 TEST_CASE("creating matrix")
 {
-    matrix_t matrix<int>;
-    REQUIRE( matrix.rows() == 0 );
-    REQUIRE( matrix.collumns() == 0 );
+    matrix_t<int> matrix;
+    REQUIRE(matrix.rows() == 0);
+    REQUIRE(matrix.collumns() == 0);
 }
 
 TEST_CASE("reading matrix")
 {
-    std::string input{
-        "3, 3\n"
-        "1 1 1\n"
-        "2 2 2\n"
-        "3 3 3" };
-    matrix_t matrix<int>;
+    std::string input{ "3, 3\n"
+                       "1 1 1\n"
+                       "2 2 2\n"
+                       "3 3 3" };
+    matrix_t<int> matrix;
     std::istringstream istream{ input };
-    
-    REQUIRE( matrix.read( istream ) );
-    REQUIRE( matrix.rows() == 3 );
-    REQUIRE( matrix.collumns() == 3 );
-    
+
+    REQUIRE(matrix.read(istream));
+    REQUIRE(matrix.rows() == 3);
+    REQUIRE(matrix.collumns() == 3);
+
     std::ostringstream ostream;
-    matrix.write( ostream );
-    
-    REQUIRE( input == ostream.str() );
+    matrix.write(ostream);
+
+    REQUIRE(input == ostream.str());
 }
 
 TEST_CASE("reading float_matrix")
 {
-    std::string input{
-        "3, 3\n"
-        "1.2 1.3 1.4\n"
-        "2.3 2.4 2.5\n"
-        "3.4 3.5 3.6" };
+    std::string input{ "3, 3\n"
+                       "1.2 1.3 1.4\n"
+                       "2.3 2.4 2.5\n"
+                       "3.4 3.5 3.6" };
     matrix_t<float> matrix;
     std::istringstream stream{ input };
-    
-    REQUIRE( matrix.read( stream ) );
-    REQUIRE( matrix.rows() == 3 );
-    REQUIRE( matrix.collumns() == 3 );
-    
+
+    REQUIRE(matrix.read(stream));
+    REQUIRE(matrix.rows() == 3);
+    REQUIRE(matrix.collumns() == 3);
+
     std::ostringstream output;
-    matrix.write( output );
-    
-    REQUIRE( input == output.str() );
+    matrix.write(output);
+
+    REQUIRE(input == output.str());
 }
 
-TEST_CASE("add matrix")
+TEST_CASE("add matrix int")
 {
-    std::string stroka1{
-        "2, 3\n"
-        "1.1 1.1 1.1\n"
-        "2.2 2.2 2.2" }; 
-    std::string stroka2{
-        "2, 3\n"
-        "2.2 2.2 2.2\n"
-        "1.1 1.1 1.1" };
-    std::string strokar{
-        "2, 3\n"
-        "3.3 3.3 3.3\n"
-        "3.3 3.3 3.3" };
-    
-    matrix_t<float> matrix1, matrix2, result;   
+    std::string stroka1{ "2, 3\n"
+                         "1 1 1\n"
+                         "2 2 2" };
+    std::string stroka2{ "2, 3\n"
+                         "2 2 2\n"
+                         "1 1 1" };
+    std::string stroka_result{ "2, 3\n"
+                               "3 3 3\n"
+                               "3 3 3" };
+
+    matrix_t<int> matrix1, matrix2, result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
-    
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
     result = matrix1 + matrix2;
-    
+
     std::ostringstream ostream;
-    result.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    result.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
+}
+
+TEST_CASE("add matrix float")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1.1 1.1 1.1\n"
+                         "2.2 2.2 2.2" };
+    std::string stroka2{ "2, 3\n"
+                         "2.2 2.2 2.2\n"
+                         "1.1 1.1 1.1" };
+    std::string stroka_result{ "2, 3\n"
+                               "3.3 3.3 3.3\n"
+                               "3.3 3.3 3.3" };
+
+    matrix_t<float> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    result = matrix1 + matrix2;
+
+    std::ostringstream ostream;
+    result.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
+}
+
+TEST_CASE("cheking add matrix")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    std::string stroka2{ "3, 3\n"
+                         "1 2 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    REQUIRE_THROWS_AS((matrix1 + matrix2), std::invalid_argument);
 }
 
 TEST_CASE("sub matrix")
 {
-    std::string stroka1{
-        "2, 3\n"
-        "3.3 3.3 3.3\n"
-        "3.3 3.3 3.3" };
-    std::string stroka2{
-        "2, 3\n"
-        "2.2 2.2 2.2\n"
-        "1.1 1.1 1.1" };
-    std::string strokar{
-        "2, 3\n"
-        "1.1 1.1 1.1\n"
-        "2.2 2.2 2.2" };
-    
-    matrix_t<float> matrix1, matrix2, result;   
+    std::string stroka1{ "2, 3\n"
+                         "3 3 3\n"
+                         "3 3 3" };
+    std::string stroka2{ "2, 3\n"
+                         "2 2 2\n"
+                         "1 1 1" };
+    std::string stroka_result{ "2, 3\n"
+                               "1 1 1\n"
+                               "2 2 2" };
+
+    matrix_t<int> matrix1, matrix2, result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
-    
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
     result = matrix1 - matrix2;
-    
+
     std::ostringstream ostream;
-    result.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    result.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
+}
+
+TEST_CASE("cheking sub matrix")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    std::string stroka2{ "3, 3\n"
+                         "1 2 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    REQUIRE_THROWS_AS((matrix1 - matrix2), std::invalid_argument);
 }
 
 TEST_CASE("mul matrix")
 {
-    std::string stroka1{
-        "2, 3\n"
-        "1 2 3\n"
-        "4 5 6" }; 
-    std::string stroka2{
-        "3, 2\n"
-        "1 4\n"
-        "2 5\n"
-        "3 6"  };
-    std::string strokar{
-        "2, 2\n"
-        "14 32\n"
-        "32 77" };
-    
-    matrix_t<int> matrix1, matrix2, result;   
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "4 5 6" };
+    std::string stroka2{ "3, 2\n"
+                         "1 4\n"
+                         "2 5\n"
+                         "3 6" };
+    std::string stroka_result{ "2, 2\n"
+                               "14 32\n"
+                               "32 77" };
+
+    matrix_t<int> matrix1, matrix2, result;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
-    
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
     result = matrix1 * matrix2;
-    
+
     std::ostringstream ostream;
-    result.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    result.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
+}
+
+TEST_CASE("cheking mul matrix")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    std::string stroka2{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    REQUIRE_THROWS_AS((matrix1 * matrix2), std::invalid_argument);
+}
+
+TEST_CASE("selfadd matrix")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1 1 1\n"
+                         "2 2 2" };
+    std::string stroka2{ "2, 3\n"
+                         "2 2 2\n"
+                         "1 1 1" };
+    std::string stroka_result{ "2, 3\n"
+                               "3 3 3\n"
+                               "3 3 3" };
+
+    matrix_t<int> matrix1, matrix2;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    matrix1 += matrix2;
+
+    std::ostringstream ostream;
+    matrix1.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
+}
+
+TEST_CASE("cheking selfadd matrix")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    std::string stroka2{ "3, 3\n"
+                         "1 2 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    REQUIRE_THROWS_AS((matrix1 += matrix2), std::invalid_argument);
 }
 
 TEST_CASE("selfsub matrix")
 {
-    std::string stroka1{
-        "2, 3\n"
-        "3.3 3.3 3.3\n"
-        "3.3 3.3 3.3" }; 
-    std::string stroka2{
-        "2, 3\n"
-        "2.2 2.2 2.2\n"
-        "1.1 1.1 1.1" }; 
-    std::string strokar{
-        "2, 3\n"
-        "1.1 1.1 1.1\n"
-        "2.2 2.2 2.2" };
-    
-    matrix_t<float> matrix1, matrix2;   
+    std::string stroka1{ "2, 3\n"
+                         "3 3 3\n"
+                         "3 3 3" };
+    std::string stroka2{ "2, 3\n"
+                         "2 2 2\n"
+                         "1 1 1" };
+    std::string stroka_result{ "2, 3\n"
+                               "1 1 1\n"
+                               "2 2 2" };
+
+    matrix_t<int> matrix1, matrix2;
     std::istringstream istream1{ stroka1 };
     std::istringstream istream2{ stroka2 };
-    
-    matrix1.read( istream1 );
-    matrix2.read( istream2 );
-    
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
     matrix1 -= matrix2;
-    
+
     std::ostringstream ostream;
-    matrix1.write( ostream );
-    
-    REQUIRE( strokar == ostream.str() );
+    matrix1.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
 }
 
-TEST_CASE("Iskluchenie 1")
+TEST_CASE("cheking selfsub matrix")
 {
-    std::string first_mat{
-        "3, 3\n"
-        "1 2 3\n"
-        "1 2 3\n"
-        "1 2 3\n"
-    };
-    std::string second_mat{
-        "3, 3\n"
-        "3 2 1\n"
-        "3 2 1\n"
-        "3 2 1\n"
-    };
-    
-    std::istringstream stream1{ first_mat };
-    matrix_t<int> first_matrix;
-    first_matrix.read( stream1 );
-    
-    std::istringstream stream2 { second_mat };
-    matrix_t<int> second_matrix;
-    second_matrix.read( stream2 );
-    
-    char op = '+';
-    bool proverka_ = first_matrix.success (second_matrix, op);
-    bool expect = true;
-    
-    REQUIRE( proverka_ == expect );
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    std::string stroka2{ "3, 3\n"
+                         "1 2 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    REQUIRE_THROWS_AS((matrix1 -= matrix2), std::invalid_argument);
 }
 
-TEST_CASE("Iskluchenie 2")
+TEST_CASE("selfmul matrix")
 {
-    std::string first_mat{
-        "3, 3\n"
-        "1 2 3\n"
-        "1 2 3\n"
-        "1 2 3\n"
-    };
-    std::string second_mat{
-        "3, 2\n"
-        "3 2\n"
-        "3 2\n"
-        "3 2\n"
-    };
-    
-    std::istringstream stream1{ first_mat };
-    matrix_t<int> first_matrix;
-    first_matrix.read( stream1 );
-    
-    std::istringstream stream2 { second_mat };
-    matrix_t<int> second_matrix;
-    second_matrix.read( stream2 );
-    
-    char op = '+';
-    bool proverka_ = first_matrix.success (second_matrix, op);
-    bool expect = false;
-    
-    REQUIRE( proverka_ == expect );
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "4 5 6" };
+    std::string stroka2{ "3, 2\n"
+                         "1 4\n"
+                         "2 5\n"
+                         "3 6" };
+    std::string stroka_result{ "2, 2\n"
+                               "14 32\n"
+                               "32 77" };
+
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    matrix1 *= matrix2;
+
+    std::ostringstream ostream;
+    matrix1.write(ostream);
+
+    REQUIRE(stroka_result == ostream.str());
 }
 
+TEST_CASE("cheking mul matrix")
+{
+    std::string stroka1{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    std::string stroka2{ "2, 3\n"
+                         "1 2 3\n"
+                         "1 2 3" };
+    matrix_t<int> matrix1, matrix2, result;
+    std::istringstream istream1{ stroka1 };
+    std::istringstream istream2{ stroka2 };
+
+    matrix1.read(istream1);
+    matrix2.read(istream2);
+
+    REQUIRE_THROWS_AS((matrix1 *= matrix2), std::invalid_argument);
+}
